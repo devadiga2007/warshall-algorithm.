@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Transitive Closure using Warshall's Algorithm | Maths Assignment</title>
+<style>
+:root{--bg:#f5f7fb;--card:#fff;--ink:#182230;--muted:#657184;--accent:#5b55d9;--line:#e3e8f0;--good:#16794b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{background:linear-gradient(135deg,#282568,#625be6);color:white;padding:42px 20px 32px}header .wrap,main{max-width:1000px;margin:auto}header p{max-width:760px;color:#e8e7ff}h1{line-height:1.15;font-size:clamp(2rem,5vw,3.2rem);margin:10px 0}h2{margin-top:0}nav{display:flex;gap:8px;flex-wrap:wrap;margin-top:24px}nav a{color:white;text-decoration:none;border:1px solid #ffffff66;border-radius:999px;padding:7px 13px;font-size:.92rem}main{padding:22px 16px 60px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:24px;margin:18px 0;box-shadow:0 6px 20px #1e293b08}.tag{color:var(--accent);font-weight:750;text-transform:uppercase;font-size:.78rem;letter-spacing:.08em}.formula{background:#f1f2ff;border-radius:12px;padding:14px;text-align:center;font-size:1.15rem;font-weight:650;overflow-wrap:anywhere;margin:12px 0}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}.mini{background:#fafbff;border:1px solid var(--line);border-radius:12px;padding:16px}table{border-collapse:collapse;width:100%;margin:12px 0}th,td{padding:10px;border-bottom:1px solid var(--line);text-align:center}th{background:#f3f5fa}button,select,input{font:inherit;border-radius:10px;padding:9px 12px;border:1px solid #d4d9e5;background:white;color:var(--ink)}button{background:var(--accent);border-color:var(--accent);color:white;font-weight:650;cursor:pointer}button.secondary{background:white;color:var(--accent)}button:disabled{opacity:.45;cursor:not-allowed}.controls{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.result{padding:12px;border-radius:10px;background:#f0faf5;margin-top:12px}.question{padding:14px 0;border-bottom:1px solid var(--line)}label{display:block;padding:4px 0;cursor:pointer}.score{font-size:1.2rem;font-weight:750}footer{text-align:center;padding:24px;color:var(--muted)}.stepcount{font-size:.9rem;color:var(--muted)}.matrix{display:grid;grid-template-columns:repeat(4,minmax(48px,1fr));gap:7px;max-width:300px;margin:14px auto}.matrix input{width:100%;text-align:center}.matrix th{padding:5px}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+<div class="tag" style="color:#d7d5ff">Interactive Mathematics Assignment</div>
+<h1>Transitive Closure of a Relation using Warshall’s Algorithm</h1>
+<p>Learn how to find the transitive closure of a relation using adjacency matrices, the Warshall update rule, worked steps, an interactive matrix explorer, and practice exercises.</p>
+<nav><a href="#definitions">Definitions</a><a href="#examples">Worked example</a><a href="#lab">Algorithm lab</a><a href="#experiment">Matrix explorer</a><a href="#exercises">Exercises</a></nav>
+</div></header>
+<main>
+<section class="card" id="definitions"><div class="tag">01 · Learn</div><h2>Definitions</h2>
+<div class="grid">
+<div class="mini"><h3>Transitive relation</h3><p>A relation R on a set A is transitive if whenever aRb and bRc, then aRc.</p><div class="formula">aRb ∧ bRc ⇒ aRc</div></div>
+<div class="mini"><h3>Transitive closure</h3><p>The transitive closure of R is the smallest transitive relation containing R. It adds pairs needed to make the relation transitive.</p><div class="formula">R⁺ = R ∪ R² ∪ R³ ∪ ⋯</div></div>
+<div class="mini"><h3>Warshall’s algorithm</h3><p>A matrix method that determines whether a path exists from vertex i to vertex j, allowing intermediate vertices one by one.</p><div class="formula">W[i,j] ← W[i,j] ∨ (W[i,k] ∧ W[k,j])</div></div>
+</div>
+<h3>Meaning of the matrix entries</h3><p>Represent the relation as a 0–1 matrix M: M[i,j] = 1 when the pair (i,j) is in the relation, and 0 otherwise. In each iteration k, check whether going from i to k and then k to j creates a path.</p>
+</section>
+<section class="card" id="examples"><div class="tag">02 · Worked example</div><h2>Step-by-step example</h2>
+<p>Let A = {1, 2, 3} and R = {(1, 2), (2, 3)}. Its adjacency matrix is:</p>
+<table><thead><tr><th>M</th><th>1</th><th>2</th><th>3</th></tr></thead><tbody><tr><th>1</th><td>0</td><td>1</td><td>0</td></tr><tr><th>2</th><td>0</td><td>0</td><td>1</td></tr><tr><th>3</th><td>0</td><td>0</td><td>0</td></tr></tbody></table>
+<div class="mini"><h3>Initial matrix W⁽⁰⁾</h3><p>The direct edges are 1 → 2 and 2 → 3.</p></div>
+<div class="mini"><h3>Allow vertex 1 as an intermediate (k = 1)</h3><p>No new path is created through vertex 1, so the matrix stays the same.</p></div>
+<div class="mini"><h3>Allow vertex 2 as an intermediate (k = 2)</h3><p>Since 1 → 2 and 2 → 3, add the path 1 → 3. The entry W[1,3] becomes 1.</p><div class="formula">W[1,3] = W[1,3] ∨ (W[1,2] ∧ W[2,3]) = 0 ∨ (1 ∧ 1) = 1</div></div>
+<div class="mini"><h3>Allow vertex 3 as an intermediate (k = 3)</h3><p>No further entries change. The final transitive-closure matrix is:</p><table><thead><tr><th>W</th><th>1</th><th>2</th><th>3</th></tr></thead><tbody><tr><th>1</th><td>0</td><td>1</td><td>1</td></tr><tr><th>2</th><td>0</td><td>0</td><td>1</td></tr><tr><th>3</th><td>0</td><td>0</td><td>0</td></tr></tbody></table><p><b>Answer:</b> R⁺ = {(1,2), (2,3), (1,3)}.</p></div>
+</section>
+<section class="card" id="lab"><div class="tag">03 · Interactive algorithm lab</div><h2>Explore each iteration</h2><p>Use the buttons to run Warshall’s algorithm on the example matrix and see which paths are added.</p>
+<div class="controls"><button id="prev" class="secondary">Previous step</button><button id="next">Show next step</button><button id="reset" class="secondary">Reset</button></div>
+<div class="formula" id="labFormula">Initial matrix W⁽⁰⁾</div><div id="labMatrix"></div><p id="labNote" aria-live="polite">Start with the direct relation edges.</p><div class="stepcount" id="stepCount">Step 0 of 3</div>
+</section>
+<section class="card" id="experiment"><div class="tag">04 · Experiment</div><h2>Interactive matrix explorer</h2><p>Enter a 3 × 3 relation matrix using 0 and 1, then calculate its transitive closure. Example: rows 1,0,0 / 0,0,1 / 0,0,0.</p>
+<div class="matrix" id="matrixInput" aria-label="Input relation matrix"></div><div class="controls"><button id="calculate">Calculate closure</button><button id="exampleMatrix" class="secondary">Load example</button></div><div id="customResult" aria-live="polite"></div>
+</section>
+<section class="card" id="exercises"><div class="tag">05 · Test yourself</div><h2>Exercises</h2><p>Choose one answer for each question, then check your answers.</p><form id="quiz">
+<div class="question"><b>1. What does a 1 in the adjacency matrix represent?</b><label><input type="radio" name="q0" value="0"> No relation exists</label><label><input type="radio" name="q0" value="1"> The ordered pair is in the relation</label><label><input type="radio" name="q0" value="2"> The set is empty</label><p class="muted" id="feedback0"></p></div>
+<div class="question"><b>2. Which is Warshall’s update rule?</b><label><input type="radio" name="q1" value="0"> W[i,j] = W[i,k] + W[k,j]</label><label><input type="radio" name="q1" value="1"> W[i,j] = W[i,k] ∨ (W[i,k] ∧ W[k,j])</label><label><input type="radio" name="q1" value="2"> W[i,j] = W[i,j] ∨ (W[i,k] ∧ W[k,j])</label><p class="muted" id="feedback1"></p></div>
+<div class="question"><b>3. If 1 → 2 and 2 → 3, which pair must be added for transitivity?</b><label><input type="radio" name="q2" value="0"> (1, 3)</label><label><input type="radio" name="q2" value="1"> (3, 1)</label><label><input type="radio" name="q2" value="2"> (2, 1)</label><p class="muted" id="feedback2"></p></div>
+<div class="question"><b>4. What is the usual time complexity of Warshall’s algorithm?</b><label><input type="radio" name="q3" value="0"> O(n)</label><label><input type="radio" name="q3" value="1"> O(n²)</label><label><input type="radio" name="q3" value="2"> O(n³)</label><p class="muted" id="feedback3"></p></div>
+<div class="controls"><button type="submit">Check answers</button><button type="button" class="secondary" id="clearQuiz">Try again</button></div><p class="score" id="score" aria-live="polite"></p></form></section>
+<section class="card"><div class="tag">Summary</div><h2>Remember</h2><ul><li>Write the relation as a 0–1 adjacency matrix.</li><li>Consider every vertex k as a possible intermediate vertex.</li><li>Update with W[i,j] = W[i,j] ∨ (W[i,k] ∧ W[k,j]).</li><li>The final matrix identifies all reachable pairs and gives the transitive closure.</li><li>For an n × n matrix, the algorithm runs in O(n³) time.</li></ul></section>
+</main><footer>Maths Assignment · Relations · Warshall’s Algorithm</footer>
+<script>
+const initial=[[0,1,0],[0,0,1],[0,0,0]];
+const steps=[
+{matrix:initial,title:'Initial matrix W⁽⁰⁾',note:'Start with the direct relation edges: 1 → 2 and 2 → 3.'},
+{matrix:[[0,1,0],[0,0,1],[0,0,0]],title:'Iteration k = 1',note:'Allow vertex 1 as an intermediate. No new path is created.'},
+{matrix:[[0,1,1],[0,0,1],[0,0,0]],title:'Iteration k = 2',note:'The path 1 → 2 → 3 exists, so add (1,3).'},
+{matrix:[[0,1,1],[0,0,1],[0,0,0]],title:'Final matrix W⁽³⁾',note:'Allow vertex 3 as an intermediate. No more entries change; this is the transitive closure.'}
+];
+let step=0;
+function renderMatrix(m,target){target.innerHTML='<table><thead><tr><th></th><th>1</th><th>2</th><th>3</th></tr></thead><tbody>'+m.map((row,i)=>'<tr><th>'+(i+1)+'</th>'+row.map(v=>'<td>'+v+'</td>').join('')+'</tr>').join('')+'</tbody></table>';}
+function drawLab(){const s=steps[step];document.getElementById('labFormula').textContent=s.title;renderMatrix(s.matrix,document.getElementById('labMatrix'));document.getElementById('labNote').textContent=s.note;document.getElementById('stepCount').textContent=`Step ${step} of 3`;document.getElementById('prev').disabled=step===0;document.getElementById('next').disabled=step===3;}
+document.getElementById('next').addEventListener('click',()=>{step=Math.min(3,step+1);drawLab()});document.getElementById('prev').addEventListener('click',()=>{step=Math.max(0,step-1);drawLab()});document.getElementById('reset').addEventListener('click',()=>{step=0;drawLab()});drawLab();
+const matrixInput=document.getElementById('matrixInput');
+for(let i=0;i<3;i++)for(let j=0;j<3;j++){const input=document.createElement('input');input.type='number';input.min='0';input.max='1';input.step='1';input.value=initial[i][j];input.setAttribute('aria-label',`Row ${i+1}, column ${j+1}`);input.className='cell';matrixInput.appendChild(input);}
+function readMatrix(){const vals=[...matrixInput.querySelectorAll('input')].map(x=>Number(x.value));if(vals.some(v=>!Number.isInteger(v)||(v!==0&&v!==1)))return null;return [vals.slice(0,3),vals.slice(3,6),vals.slice(6,9)];}
+function closure(m){const w=m.map(r=>r.slice());for(let k=0;k<3;k++)for(let i=0;i<3;i++)for(let j=0;j<3;j++)w[i][j]=Number(Boolean(w[i][j]||(w[i][k]&&w[k][j])));return w;}
+document.getElementById('calculate').addEventListener('click',()=>{const m=readMatrix(),out=document.getElementById('customResult');if(!m){out.textContent='Please enter only 0 or 1 in every cell.';return;}const c=closure(m);out.innerHTML='<h3>Transitive closure matrix</h3>';renderMatrix(c,out);const pairs=[];c.forEach((r,i)=>r.forEach((v,j)=>{if(v)pairs.push('('+ (i+1)+', '+(j+1)+')')}));out.innerHTML+='<p><b>Closure pairs:</b> '+(pairs.join(', ')||'∅')+'</p>';});
+document.getElementById('exampleMatrix').addEventListener('click',()=>{[...matrixInput.querySelectorAll('input')].forEach((x,i)=>x.value=initial.flat()[i]);document.getElementById('customResult').innerHTML='';});
+const correct=[1,2,0,2],why=['A 1 indicates that the ordered pair belongs to the relation.','The update checks whether a path from i to j can pass through k.','Transitivity requires (1,3) when (1,2) and (2,3) are present.','Three nested loops over vertices give O(n³) time.'];
+document.getElementById('quiz').addEventListener('submit',e=>{e.preventDefault();let score=0;correct.forEach((ans,i)=>{const chosen=document.querySelector(`input[name="q${i}"]:checked`),f=document.getElementById(`feedback${i}`);if(chosen&&Number(chosen.value)===ans){score++;f.textContent='Correct! '+why[i];f.style.color='var(--good)';}else{f.textContent='Correct answer: Option '+['A','B','C'][ans]+'. '+why[i];f.style.color='#b42318';}});document.getElementById('score').textContent=`Your score: ${score} / ${correct.length}`;});
+document.getElementById('clearQuiz').addEventListener('click',()=>{document.getElementById('quiz').reset();correct.forEach((_,i)=>document.getElementById(`feedback${i}`).textContent='');document.getElementById('score').textContent='';});
+</script>
+</body></html>
